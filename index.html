@@ -1,0 +1,2737 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KDA Expert — профессиональная косметика</title>
+  <meta name="description" content="KDA Expert — российская линейка профессиональной косметики. 6 серий под конкретные задачи кожи: увлажнение, пигментация, жирность, чувствительность и восстановление." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ========================================
+       CSS CUSTOM PROPERTIES
+    ======================================== */
+
+    /* Регистрация цвета активной серии для плавных CSS-переходов */
+    @property --active-color {
+      syntax: '<color>';
+      inherits: true;
+      initial-value: #C72E3B;
+    }
+
+    :root {
+      /* Фоны */
+      --bg-main:    #FFFFFF;
+      --bg-section: #F7F5F3;
+      --bg-card:    #F2F0ED;
+
+      /* Текст */
+      --text-primary:   #1A1714;
+      --text-secondary: #6B6560;
+
+      /* Бренд */
+      --brand-navy: #0B2D7B;
+
+      /* Цвета серий */
+      --revitalizer:   #D6224A;
+      --hydrant:       #1648A0;
+      --depigmentator: #8254C4;
+      --sebo:          #19867A;
+      --antiacne:      #7AAF4E;
+      --moderator:     #C87898;
+
+      /* Граница */
+      --border: rgba(26, 23, 20, 0.10);
+
+      /* Hero — цвет активной серии, меняется через JS */
+      --active-color: #C72E3B;
+
+      /* Анимация */
+      --ease: cubic-bezier(.2, .78, .2, 1);
+      --ease-ui: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --ease-spring: cubic-bezier(.2,.8,.2,1);
+
+      /* Навигация */
+      --nav-h: 88px;
+    }
+
+    /* ========================================
+       RESET
+    ======================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      color: var(--text-primary);
+      background: var(--bg-main);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; }
+
+
+    /* ========================================
+       НАВИГАЦИЯ (sticky)
+    ======================================== */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      height: var(--nav-h);
+      background: rgba(248, 245, 244, 0.82);
+      backdrop-filter: blur(20px) saturate(1.4);
+      -webkit-backdrop-filter: blur(20px) saturate(1.4);
+      border-bottom: 1px solid transparent;
+      transition:
+        border-color 0.35s var(--ease-ui),
+        background   0.35s var(--ease-ui),
+        box-shadow   0.35s var(--ease-ui);
+    }
+
+    .site-nav.is-scrolled {
+      background: rgba(248, 245, 244, 0.97);
+      border-color: var(--border);
+      box-shadow: 0 1px 24px rgba(26, 23, 20, 0.05);
+    }
+
+    .nav-inner {
+      max-width: 1340px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 clamp(16px, 3.2vw, 48px);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    /* Логотип */
+    .nav-logo {
+      flex-shrink: 0;
+      height: clamp(52px, 5.4vw, 80px);
+      width: clamp(146px, 15vw, 224px);
+      display: flex;
+      align-items: center;
+      margin-right: 12px;
+    }
+    .nav-logo img {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Основное меню */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: clamp(20px, 2.4vw, 36px);
+      margin: 0 auto;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+    .nav-menu a:hover { color: var(--text-primary); }
+
+    /* CTA кнопки в nav */
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-outline {
+      font-size: 13.5px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      padding: 7px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .btn-outline:hover {
+      color: var(--text-primary);
+      border-color: rgba(26, 23, 20, 0.22);
+      background: rgba(26, 23, 20, 0.03);
+    }
+
+    .btn-primary {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #fff;
+      background: var(--brand-navy);
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s ease, transform 0.25s var(--ease);
+    }
+    .btn-primary:hover {
+      background: #0e3899;
+      transform: translateY(-1px);
+    }
+
+    /* Бургер (мобайл) */
+    .nav-burger {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      color: var(--text-primary);
+      margin-left: auto;
+    }
+    .nav-burger svg { display: block; }
+
+
+    /* ========================================
+       HERO СЕКЦИЯ — PRODUCT THEATRE
+    ======================================== */
+
+    /* Молочный фон с плавным цветовым пятном под активную серию */
+    .kda-hero {
+      position: relative;
+      width: 100%;
+      height: clamp(680px, 78vh, 760px);
+      overflow: visible; /* не обрезаем масштабированные карточки */
+      isolation: isolate;
+      background:
+        radial-gradient(
+          circle at 50% 56%,
+          color-mix(in srgb, var(--active-color) 18%, transparent),
+          transparent 44%
+        ),
+        linear-gradient(180deg, #fbfaf7 0%, #f5f0ea 100%);
+      transition: --active-color 500ms ease, background 500ms ease;
+    }
+
+    /* Дополнительное свечение под продуктами */
+    .kda-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse 72% 52% at 50% 70%,
+        color-mix(in srgb, var(--active-color) 13%, transparent),
+        transparent 72%
+      );
+      opacity: 0.88;
+    }
+
+    /* Вигнет по краям и растворение снизу */
+    .kda-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg,
+          rgba(251,250,247,.99) 0%,
+          rgba(251,250,247,.56) 6%,
+          transparent 22%,
+          transparent 78%,
+          rgba(251,250,247,.56) 94%,
+          rgba(251,250,247,.99) 100%
+        ),
+        linear-gradient(180deg,
+          rgba(255,255,255,.76) 0%,
+          transparent 20%,
+          transparent 64%,
+          rgba(245,240,234,.99) 100%
+        );
+    }
+
+    /* ── Текстовый блок ── */
+    .hero-copy {
+      position: relative;
+      z-index: 20;
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: center;
+      padding-top: clamp(52px, 6.4vh, 80px);
+      padding-inline: clamp(16px, 5vw, 48px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .hero-copy .hero-cta {
+      pointer-events: all;
+    }
+
+    .hero-eyelet {
+      font-size: clamp(9px, 0.88vw, 11px);
+      font-weight: 500;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--brand-navy);
+      opacity: 0.52;
+      margin-bottom: clamp(14px, 2vh, 24px);
+    }
+
+    .hero-h1 {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(48px, 5.4vw, 82px);
+      font-weight: 700;
+      line-height: 0.96;
+      letter-spacing: -0.034em;
+      color: var(--text-primary);
+      margin-bottom: clamp(14px, 2vh, 22px);
+      max-width: 760px;
+    }
+
+    .hero-desc {
+      font-size: clamp(15px, 1.3vw, 17.5px);
+      font-weight: 400;
+      line-height: 1.56;
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin-bottom: clamp(24px, 3.2vh, 36px);
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-btn-primary {
+      font-size: 15px;
+      font-weight: 500;
+      color: #fff;
+      background: var(--brand-navy);
+      padding: 13px 28px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      transition: background 0.25s ease, transform 0.3s var(--ease);
+    }
+    .hero-btn-primary:hover {
+      background: #0e3899;
+      transform: translateY(-2px);
+    }
+
+    .hero-btn-ghost {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.72);
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: color 0.25s ease, background 0.25s ease, transform 0.3s var(--ease);
+    }
+    .hero-btn-ghost:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-2px);
+    }
+
+    /* ── Product theatre — сцена с 5 линейками ── */
+    .series-stage {
+      position: absolute;
+      /* Центрирование через left/right + margin вместо transform: translateX(-50%).
+         ВАЖНО: transform создаёт stacking context даже без z-index — это ломает
+         z-index всплытие активного слота поверх hero-copy.
+         bottom: 80px заменяет translateY(-80px). */
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      bottom: 80px;
+      width: min(1440px, 94vw);
+      height: 440px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      align-items: end;
+      /* z-index не задан — stage не создаёт stacking context */
+      pointer-events: auto;
+    }
+
+    /* Слот — фиксированная зона наведения, не меняет размер */
+    .series-slot {
+      position: relative;
+      height: 440px;
+      min-width: 0;
+      pointer-events: auto;
+      z-index: 5;   /* неактивный — ниже текста (z-index 20), выше фоновых слоёв */
+      cursor: zoom-in;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .series-slot.is-neighbor { z-index: 8; }
+    .series-slot.is-active   { z-index: 25; } /* выше hero-copy (z-index 20) */
+
+    /* Карточка — анимируемый контейнер изображения */
+    .series-card {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: clamp(190px, 20vw, 340px);
+      transform: translateX(-50%) scale(0.91);
+      transform-origin: bottom center;
+      opacity: 0.72;
+      filter: blur(0.5px) saturate(0.96) contrast(0.98);
+      transition:
+        transform 520ms cubic-bezier(.2,.8,.2,1),
+        opacity   420ms ease,
+        filter    420ms ease;
+      will-change: transform, opacity, filter;
+      isolation: isolate;
+      pointer-events: none; /* интерактивность — на .series-slot, не на карточке */
+    }
+
+    /* Активная серия — приближается к зрителю */
+    .series-slot.is-active .series-card {
+      transform: translateX(-50%) translateY(-70px) scale(1.42);
+      opacity: 1;
+      filter: blur(0) saturate(1.08) contrast(1.08);
+      z-index: 30;
+    }
+
+    /* Соседняя — чуть заметнее */
+    .series-slot.is-neighbor .series-card {
+      opacity: 0.62;
+      transform: translateX(-50%) scale(0.90);
+      filter: blur(0.8px) saturate(0.95) contrast(0.95);
+    }
+
+    /* Дальняя — мягкий фон */
+    .series-slot.is-far .series-card {
+      opacity: 0.38;
+      transform: translateX(-50%) scale(0.78);
+      filter: blur(2px) saturate(0.8);
+    }
+
+    /* Glow-слой — размытая копия для атмосферного свечения вокруг продукта */
+    .series-glow {
+      position: absolute;
+      inset: -28px;
+      width: calc(100% + 56px);
+      height: calc(100% + 56px);
+      object-fit: contain;
+      filter: blur(28px);
+      opacity: 0.28;
+      transform: scale(1.04);
+      z-index: 0;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Основная картинка — резкая, края растворены через маску */
+    .series-image {
+      position: relative;
+      z-index: 2;
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      mix-blend-mode: multiply;
+      -webkit-mask-image: radial-gradient(
+        ellipse at 50% 58%,
+        #000 0%,
+        #000 38%,
+        rgba(0,0,0,0.86) 54%,
+        rgba(0,0,0,0.40) 70%,
+        transparent 88%
+      );
+      mask-image: radial-gradient(
+        ellipse at 50% 58%,
+        #000 0%,
+        #000 38%,
+        rgba(0,0,0,0.86) 54%,
+        rgba(0,0,0,0.40) 70%,
+        transparent 88%
+      );
+    }
+
+    /* Подпись активной серии */
+    .active-series-label {
+      position: absolute;
+      left: 50%;
+      bottom: 72px; /* выше scroll-hint (~24px + ~36px высоты кнопки = ~60px) */
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 40;
+      pointer-events: none;
+      opacity: 0;
+      white-space: nowrap;
+      transition: opacity 320ms ease;
+    }
+
+    .active-series-label.is-visible {
+      opacity: 1;
+    }
+
+    .active-series-name {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(10px, 1vw, 13px);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--active-color);
+      transition: color 320ms ease;
+    }
+
+    .active-series-desc {
+      margin-top: 6px;
+      font-size: clamp(12px, 1vw, 14px);
+      color: rgba(30, 28, 25, 0.52);
+      font-weight: 400;
+    }
+
+    /* Стрелка-подсказка */
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: clamp(12px, 2.2vh, 24px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      opacity: 0.28;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      animation: hint-bob 2.4s ease-in-out infinite;
+      transition: opacity 0.25s ease;
+    }
+    .hero-scroll-hint:hover { opacity: 0.62; }
+
+    .hero-scroll-hint span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .hero-scroll-hint svg { color: var(--text-secondary); }
+
+    @keyframes hint-bob {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(5px); }
+    }
+
+
+    /* ========================================
+       О БРЕНДЕ
+    ======================================== */
+    .about-section {
+      background: var(--bg-section);
+      padding: clamp(72px, 10vh, 120px) clamp(16px, 5vw, 48px);
+    }
+
+    .about-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Надпись-метка над заголовком */
+    .section-eyelet {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--brand-navy);
+      opacity: 0.55;
+      margin-bottom: 14px;
+    }
+
+    /* H2 секции */
+    .section-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(28px, 3.8vw, 48px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.022em;
+      color: var(--text-primary);
+      margin-bottom: clamp(44px, 7vh, 80px);
+      max-width: 600px;
+    }
+
+    /* Три карточки K · D · A */
+    .kda-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(14px, 2.4vw, 28px);
+      margin-bottom: clamp(52px, 8vh, 88px);
+    }
+
+    .kda-card {
+      position: relative;
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: clamp(28px, 3.6vw, 44px) clamp(24px, 2.8vw, 36px);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.35s var(--ease-ui), box-shadow 0.35s var(--ease-ui);
+    }
+    .kda-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 52px rgba(26, 23, 20, 0.08);
+    }
+
+    /* Большая декоративная буква */
+    .kda-bg-letter {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(80px, 9vw, 130px);
+      font-weight: 700;
+      line-height: 0.9;
+      color: var(--brand-navy);
+      opacity: 0.055;
+      letter-spacing: -0.04em;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Бейдж K / D / A */
+    .kda-badge {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 7px;
+      margin-bottom: 18px;
+    }
+
+    .kda-badge-letter {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(20px, 2.2vw, 26px);
+      font-weight: 700;
+      color: var(--brand-navy);
+      line-height: 1;
+    }
+
+    .kda-badge-word {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .kda-card-h {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(17px, 1.8vw, 21px);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .kda-card-p {
+      font-size: clamp(14px, 1.3vw, 15.5px);
+      font-weight: 400;
+      line-height: 1.64;
+      color: var(--text-secondary);
+    }
+
+    /* Разделитель */
+    .about-rule {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: clamp(48px, 7vh, 80px);
+    }
+
+    /* Цифры / статы */
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(16px, 3vw, 32px);
+      margin-bottom: clamp(48px, 7vh, 80px);
+    }
+
+    .stat-value {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(36px, 4.4vw, 58px);
+      font-weight: 700;
+      color: var(--brand-navy);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-size: clamp(13px, 1.2vw, 15px);
+      font-weight: 400;
+      line-height: 1.44;
+      color: var(--text-secondary);
+    }
+
+    /* Миссия */
+    .about-mission {
+      max-width: 740px;
+    }
+
+    .mission-text {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(18px, 2.2vw, 27px);
+      font-weight: 300;
+      line-height: 1.52;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .mission-text strong {
+      font-weight: 600;
+      color: var(--brand-navy);
+    }
+
+
+    /* ========================================
+       АДАПТИВ
+    ======================================== */
+
+    /* Планшет — средний */
+    @media (max-width: 1180px) {
+      .series-slot.is-active .series-card {
+        transform: translateX(-50%) translateY(-55px) scale(1.32);
+      }
+      .series-card {
+        width: clamp(155px, 19vw, 275px);
+      }
+    }
+
+    /* Планшет */
+    @media (max-width: 900px) {
+      .kda-grid { grid-template-columns: 1fr; gap: 12px; }
+      .about-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Мобайл */
+    @media (max-width: 768px) {
+      /* Nav */
+      .nav-menu   { display: none; }
+      .btn-outline { display: none; }
+      .nav-burger  { display: flex; }
+
+      /* Hero */
+      .kda-hero {
+        height: auto;
+        min-height: 600px;
+      }
+
+      .hero-h1 { font-size: clamp(36px, 9vw, 52px); }
+
+      /* Горизонтальный scroll-snap для серий на мобайл */
+      .series-stage {
+        position: relative;
+        transform: none;
+        left: auto;
+        right: auto;
+        margin: 0;
+        bottom: auto;
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        width: 100%;
+        height: auto;
+        min-height: 300px;
+        padding: 20px 0 76px;
+        grid-template-columns: unset;
+        align-items: unset;
+        /* z-index не задан — stage не создаёт stacking context на мобайле тоже */
+      }
+      .series-stage::-webkit-scrollbar { display: none; }
+
+      .series-slot {
+        flex: 0 0 68vw;
+        scroll-snap-align: center;
+        height: 280px;
+      }
+
+      .series-card {
+        width: 62vw;
+      }
+
+      .series-slot.is-active .series-card {
+        transform: translateX(-50%) translateY(-36px) scale(1.18);
+      }
+
+      .series-slot.is-neighbor .series-card {
+        transform: translateX(-50%) scale(0.88);
+        opacity: 0.52;
+      }
+
+      .series-slot.is-far .series-card {
+        transform: translateX(-50%) scale(0.74);
+        opacity: 0.26;
+      }
+
+      .active-series-label {
+        bottom: 52px; /* выше scroll-hint на мобайле */
+      }
+
+      /* About */
+      .about-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ========================================
+       МОБИЛЬНОЕ МЕНЮ — нижний drawer
+    ======================================== */
+    .mobile-drawer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+    }
+    .mobile-drawer.is-open { display: block; }
+
+    .drawer-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(26,23,20,0.38);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      animation: fadeIn 0.26s ease;
+    }
+
+    .drawer-panel {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      padding: 8px 0 env(safe-area-inset-bottom, 16px);
+      animation: slideUp 0.34s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .drawer-handle {
+      width: 36px; height: 4px;
+      background: rgba(26,23,20,0.14);
+      border-radius: 2px;
+      margin: 8px auto 20px;
+    }
+
+    .drawer-nav { list-style: none; }
+
+    .drawer-nav li a, .drawer-nav li button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 15px 24px;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-primary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .drawer-nav li:last-child a,
+    .drawer-nav li:last-child button { border-bottom: none; }
+
+    .drawer-cta {
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .drawer-btn-primary {
+      display: block; width: 100%;
+      padding: 14px; border-radius: 12px;
+      background: var(--brand-navy); color: #fff;
+      font-size: 15px; font-weight: 500;
+      border: none; cursor: pointer; font-family: inherit;
+      text-align: center;
+    }
+
+    @keyframes fadeIn  { from { opacity: 0 } to { opacity: 1 } }
+    @keyframes slideUp { from { transform: translateY(100%) } to { transform: translateY(0) } }
+
+
+    /* ========================================
+       СЕРИИ — КАТАЛОГ
+    ======================================== */
+    .series-section {
+      background: var(--bg-main);
+      padding: clamp(72px, 10vh, 120px) clamp(16px, 5vw, 48px);
+    }
+
+    .series-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .series-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: clamp(44px, 7vh, 72px);
+    }
+
+    .series-header-text { max-width: 540px; }
+
+    .series-count-badge {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 700;
+      color: var(--brand-navy);
+      opacity: 0.08;
+      line-height: 1;
+      flex-shrink: 0;
+      letter-spacing: -0.04em;
+      padding-bottom: 8px;
+    }
+
+    /* Сетка 3×2 для серий */
+    .series-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(14px, 2vw, 24px);
+    }
+
+    /* Карточка серии */
+    .sc {
+      --c: #D6224A;
+      position: relative;
+      border-radius: 24px;
+      border: 1px solid rgba(var(--c-rgb, 214,34,74), 0.14);
+      background: color-mix(in srgb, var(--c) 6%, #fff);
+      padding: clamp(24px, 3vw, 36px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: transform 0.35s var(--ease-ui), box-shadow 0.35s var(--ease-ui);
+      cursor: default;
+    }
+    .sc:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 24px 56px rgba(26,23,20,0.09);
+    }
+
+    /* Декоративный glow-круг */
+    .sc::before {
+      content: "";
+      position: absolute;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--c) 0%, transparent 70%);
+      opacity: 0.08;
+      top: -60px; right: -60px;
+      pointer-events: none;
+    }
+
+    .sc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .sc-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--c);
+      flex-shrink: 0;
+    }
+
+    .sc-series-name {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--c);
+    }
+
+    /* Фото продукта */
+    .sc-img-wrap {
+      height: clamp(140px, 14vw, 200px);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .sc-img {
+      max-height: 100%;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      -webkit-mask-image: radial-gradient(ellipse at 50% 60%, #000 40%, rgba(0,0,0,0.7) 70%, transparent 90%);
+      mask-image: radial-gradient(ellipse at 50% 60%, #000 40%, rgba(0,0,0,0.7) 70%, transparent 90%);
+      transition: transform 0.42s var(--ease-spring);
+    }
+    .sc:hover .sc-img { transform: scale(1.06) translateY(-4px); }
+
+    /* Плейсхолдер для Анти-акне */
+    .sc-placeholder {
+      height: 100%;
+      width: 120px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--c) 18%, #fff), color-mix(in srgb, var(--c) 8%, #fff));
+      border-radius: 16px;
+      border: 1px solid color-mix(in srgb, var(--c) 24%, transparent);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sc-placeholder-icon {
+      font-family: 'Manrope', sans-serif;
+      font-size: 28px; font-weight: 700;
+      color: var(--c); opacity: 0.5;
+    }
+
+    .sc-h {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(17px, 1.7vw, 21px);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .sc-task {
+      font-size: clamp(13px, 1.1vw, 14.5px);
+      color: var(--c);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .sc-desc {
+      font-size: clamp(13px, 1.1vw, 14px);
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    /* Теги активов */
+    .sc-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .sc-tag {
+      font-size: 11px;
+      font-weight: 400;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: color-mix(in srgb, var(--c) 10%, #fff);
+      color: color-mix(in srgb, var(--c) 80%, #1A1714);
+      border: 1px solid color-mix(in srgb, var(--c) 18%, transparent);
+      white-space: nowrap;
+    }
+
+    .sc-sku {
+      font-size: 12px;
+      color: var(--text-secondary);
+      opacity: 0.7;
+      margin-top: auto;
+      border-top: 1px solid color-mix(in srgb, var(--c) 16%, transparent);
+      padding-top: 12px;
+    }
+
+    @media (max-width: 960px) {
+      .series-grid { grid-template-columns: repeat(2, 1fr); }
+      .series-count-badge { display: none; }
+    }
+    @media (max-width: 600px) {
+      .series-grid { grid-template-columns: 1fr; }
+      .series-header { flex-direction: column; align-items: flex-start; }
+    }
+
+
+    /* ========================================
+       ПОЧЕМУ KDA EXPERT
+    ======================================== */
+    .why-section {
+      background: var(--bg-section);
+      padding: clamp(72px, 10vh, 120px) clamp(16px, 5vw, 48px);
+    }
+
+    .why-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(14px, 2vw, 24px);
+      margin-top: clamp(44px, 7vh, 72px);
+    }
+
+    .why-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: clamp(24px, 2.8vw, 36px) clamp(20px, 2.2vw, 28px);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s var(--ease-ui), box-shadow 0.35s var(--ease-ui);
+    }
+    .why-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 44px rgba(26,23,20,0.07);
+    }
+
+    .why-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: rgba(11,45,123,0.07);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+    }
+
+    .why-icon svg { color: var(--brand-navy); }
+
+    .why-num {
+      position: absolute;
+      top: 12px; right: 18px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 64px; font-weight: 700;
+      color: var(--brand-navy); opacity: 0.04;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      pointer-events: none; user-select: none;
+    }
+
+    .why-h {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(15px, 1.5vw, 18px);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .why-p {
+      font-size: clamp(13px, 1.1vw, 14.5px);
+      line-height: 1.64;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 960px) { .why-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .why-grid { grid-template-columns: 1fr; } }
+
+
+    /* ========================================
+       ГДЕ КУПИТЬ (B2C)
+    ======================================== */
+    .buy-section {
+      background: var(--bg-main);
+      padding: clamp(72px, 10vh, 120px) clamp(16px, 5vw, 48px);
+    }
+
+    .buy-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .buy-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(14px, 2vw, 20px);
+      margin-top: clamp(44px, 7vh, 72px);
+    }
+
+    .marketplace-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: clamp(24px, 3vw, 36px) clamp(20px, 2.4vw, 32px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      text-align: center;
+      transition: transform 0.35s var(--ease-ui), box-shadow 0.35s var(--ease-ui), border-color 0.25s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .marketplace-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 48px rgba(26,23,20,0.08);
+      border-color: rgba(26,23,20,0.18);
+    }
+
+    .mp-logo {
+      height: 36px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .mp-logo-text {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(17px, 1.8vw, 22px);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* Цвета маркетплейсов */
+    .mp-ozon     .mp-logo-text { color: #005BFF; }
+    .mp-wb       .mp-logo-text { color: #CB11AB; }
+    .mp-ym       .mp-logo-text { color: #FC3F1D; }
+    .mp-apteki   .mp-logo-text { color: #009B77; }
+
+    .mp-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .mp-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .mp-btn {
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--brand-navy);
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: 1.5px solid rgba(11,45,123,0.22);
+      background: rgba(11,45,123,0.04);
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .marketplace-card:hover .mp-btn {
+      background: var(--brand-navy);
+      color: #fff;
+      border-color: var(--brand-navy);
+    }
+
+    @media (max-width: 860px) { .buy-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .buy-grid { grid-template-columns: 1fr; } }
+
+
+    /* ========================================
+       ДЛЯ ПАРТНЁРОВ (B2B)
+    ======================================== */
+    .partners-section {
+      background: var(--bg-section);
+      padding: clamp(72px, 10vh, 120px) clamp(16px, 5vw, 48px);
+    }
+
+    .partners-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .partners-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(40px, 6vw, 88px);
+      align-items: start;
+      margin-top: clamp(44px, 7vh, 72px);
+    }
+
+    /* Левая колонка — преимущества */
+    .partners-benefits {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(16px, 2.2vw, 24px);
+    }
+
+    .benefit-card {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: clamp(18px, 2vw, 24px);
+      border: 1px solid var(--border);
+      transition: transform 0.3s var(--ease-ui), box-shadow 0.3s var(--ease-ui);
+    }
+    .benefit-card:hover {
+      transform: translateX(4px);
+      box-shadow: 0 12px 32px rgba(26,23,20,0.06);
+    }
+
+    .benefit-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(11,45,123,0.07);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .benefit-icon svg { color: var(--brand-navy); }
+
+    .benefit-text { flex: 1; }
+    .benefit-h {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(14px, 1.3vw, 16px);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .benefit-p {
+      font-size: clamp(12.5px, 1.1vw, 14px);
+      line-height: 1.58;
+      color: var(--text-secondary);
+    }
+
+    /* Правая колонка — CTA */
+    .partners-cta-col {
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+    }
+
+    .partners-cta-box {
+      background: var(--brand-navy);
+      border-radius: 24px;
+      padding: clamp(32px, 4vw, 48px);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .partners-cta-box::before {
+      content: "";
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+      top: -80px; right: -80px;
+      pointer-events: none;
+    }
+
+    .cta-box-eyelet {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 14px;
+    }
+
+    .cta-box-h {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .cta-box-p {
+      font-size: clamp(13.5px, 1.2vw, 15px);
+      line-height: 1.6;
+      color: rgba(255,255,255,0.68);
+      margin-bottom: 28px;
+    }
+
+    .cta-box-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cta-btn-white {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px 24px;
+      background: #fff;
+      color: var(--brand-navy);
+      font-family: inherit;
+      font-size: 15px; font-weight: 600;
+      border-radius: 12px;
+      border: none; cursor: pointer;
+      transition: background 0.2s ease, transform 0.3s var(--ease);
+    }
+    .cta-btn-white:hover { background: #f0f2fa; transform: translateY(-1px); }
+
+    .cta-btn-ghost-white {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 24px;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.82);
+      font-family: inherit;
+      font-size: 14px; font-weight: 400;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+      text-decoration: none;
+    }
+    .cta-btn-ghost-white:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
+    @media (max-width: 860px) {
+      .partners-layout { grid-template-columns: 1fr; }
+      .partners-cta-col { position: static; }
+    }
+
+
+    /* ========================================
+       ФУТЕР
+    ======================================== */
+    .site-footer {
+      background: var(--text-primary);
+      color: rgba(255,255,255,0.7);
+      padding: clamp(48px, 7vh, 80px) clamp(16px, 5vw, 48px) clamp(32px, 4vh, 48px);
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: clamp(24px, 4vw, 56px);
+      margin-bottom: clamp(40px, 6vh, 64px);
+      padding-bottom: clamp(40px, 6vh, 64px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .footer-brand { display: flex; flex-direction: column; }
+
+    .footer-logo {
+      height: auto;
+      width: clamp(140px, 14vw, 200px);
+      margin-bottom: 16px;
+      filter: brightness(0) invert(1);
+    }
+
+    .footer-brand-p {
+      font-size: 13.5px;
+      line-height: 1.64;
+      color: rgba(255,255,255,0.5);
+      max-width: 240px;
+      margin-bottom: 20px;
+    }
+
+    .footer-gmp {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 6px;
+      padding: 5px 10px;
+    }
+
+    .footer-col-h {
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      margin-bottom: 18px;
+    }
+
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 11px; }
+    .footer-col ul li a {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      transition: color 0.2s ease;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: rgba(255,255,255,0.28);
+    }
+
+    .footer-series-dots {
+      display: flex; gap: 8px;
+    }
+
+    .footer-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    @media (max-width: 860px) {
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+
+
+    /* ========================================
+       МОДАЛЬНОЕ ОКНО — B2B ФОРМА
+    ======================================== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(26,23,20,0.48);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.is-open {
+      display: flex;
+    }
+
+    .modal-panel {
+      background: #fff;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalIn 0.36s cubic-bezier(.2,.8,.2,1);
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-header {
+      padding: clamp(24px, 3vw, 36px) clamp(24px, 3vw, 36px) 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-close {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(26,23,20,0.06);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s ease;
+      margin-top: 2px;
+    }
+    .modal-close:hover { background: rgba(26,23,20,0.12); }
+
+    .modal-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(20px, 2.2vw, 26px);
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .modal-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .modal-body {
+      padding: clamp(20px, 2.8vw, 32px) clamp(24px, 3vw, 36px) clamp(24px, 3vw, 36px);
+    }
+
+    /* Форма */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    .form-label {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
+    }
+
+    .form-label .req { color: #D6224A; margin-left: 2px; }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-primary);
+      background: var(--bg-section);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+      resize: none;
+    }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--brand-navy);
+      box-shadow: 0 0 0 3px rgba(11,45,123,0.1);
+      background: #fff;
+    }
+    .form-input.is-invalid, .form-textarea.is-invalid {
+      border-color: #D6224A;
+      box-shadow: 0 0 0 3px rgba(214,34,74,0.1);
+    }
+
+    .form-error {
+      font-size: 12px;
+      color: #D6224A;
+      display: none;
+    }
+    .form-group.has-error .form-error { display: block; }
+
+    .form-textarea { height: 90px; }
+
+    .form-submit {
+      width: 100%;
+      padding: 15px;
+      background: var(--brand-navy);
+      color: #fff;
+      font-family: inherit;
+      font-size: 15px; font-weight: 500;
+      border-radius: 12px;
+      border: none; cursor: pointer;
+      margin-top: 8px;
+      position: relative;
+      transition: background 0.2s ease, transform 0.3s var(--ease);
+    }
+    .form-submit:hover { background: #0e3899; transform: translateY(-1px); }
+    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* Экран успеха */
+    .modal-success {
+      display: none;
+      text-align: center;
+      padding: clamp(32px, 4vw, 56px) clamp(24px, 3vw, 36px);
+    }
+    .modal-success.is-visible { display: block; }
+    .modal-success .success-icon {
+      width: 64px; height: 64px;
+      background: rgba(25,134,122,0.1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .modal-success h3 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 22px; font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+    .modal-success p {
+      font-size: 15px; line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 480px) {
+      .modal-overlay { align-items: flex-end; padding: 0; }
+      .modal-panel { max-height: 92vh; border-radius: 20px 20px 0 0; max-width: 100%; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+
+    /* ========================================
+       SCROLL-REVEAL
+    ======================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition:
+        opacity 0.56s var(--ease-ui),
+        transform 0.56s var(--ease-ui);
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+
+    /* prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 1ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================
+       НАВИГАЦИЯ
+  ======================================== -->
+  <header class="site-nav" id="siteNav" role="banner">
+    <div class="nav-inner">
+
+      <!-- Логотип -->
+      <a href="#" class="nav-logo" aria-label="KDA Expert — на главную">
+        <img src="assets/Logo SVG синий.svg" alt="KDA Expert" />
+      </a>
+
+      <!-- Меню десктоп -->
+      <nav aria-label="Основная навигация">
+        <ul class="nav-menu">
+          <li><a href="#series">Серии</a></li>
+          <li><a href="#about">О бренде</a></li>
+          <li><a href="#buy">Где купить</a></li>
+          <li><a href="#partners">Партнёрам</a></li>
+        </ul>
+      </nav>
+
+      <!-- CTA -->
+      <div class="nav-actions">
+        <button class="btn-outline" onclick="scrollNav('#buy')">Купить</button>
+        <button class="btn-primary" id="navPartnerBtn">Стать партнёром</button>
+      </div>
+
+      <!-- Бургер мобайл -->
+      <button class="nav-burger" id="navBurger" aria-label="Открыть меню" aria-expanded="false">
+        <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true">
+          <rect y="0"  width="22" height="2" rx="1" fill="currentColor"/>
+          <rect y="7"  width="16" height="2" rx="1" fill="currentColor"/>
+          <rect y="14" width="22" height="2" rx="1" fill="currentColor"/>
+        </svg>
+      </button>
+
+    </div>
+  </header>
+
+
+  <!-- ========================================
+       HERO — PRODUCT THEATRE
+  ======================================== -->
+  <section class="kda-hero" id="kdaHero" aria-label="Линейки косметики KDA Expert">
+
+    <!-- Текстовый блок (z-index 20, поверх фона, под активным букетом) -->
+    <div class="hero-copy">
+      <span class="hero-eyelet">KIND · DELUXE · AVAILABLE</span>
+      <h1 class="hero-h1">Уход точно под<br>вашу задачу</h1>
+      <p class="hero-desc">
+        6 серий — каждая закрывает конкретную задачу кожи
+        полным пошаговым протоколом. Без лишнего.
+      </p>
+      <div class="hero-cta">
+        <a href="#series" class="hero-btn-primary">Выбрать серию</a>
+        <a href="#" class="hero-btn-ghost" id="heroPartnerBtn">Стать партнёром</a>
+      </div>
+    </div>
+
+    <!-- Product theatre: 5 слотов-зон наведения -->
+    <!-- hover/active считается по слоту, а не по картинке — нет скачков -->
+    <div class="series-stage" id="seriesStage">
+
+      <div class="series-slot" data-index="0">
+        <div class="series-card">
+          <img class="series-glow"
+               src="assets/depigmentator.webp"
+               alt="" aria-hidden="true"
+               loading="eager" decoding="async" />
+          <img class="series-image"
+               src="assets/depigmentator.webp"
+               alt="Серия Депигментатор — осветление пятен и ровный тон"
+               loading="eager" decoding="async" />
+        </div>
+      </div>
+
+      <div class="series-slot" data-index="1">
+        <div class="series-card">
+          <img class="series-glow"
+               src="assets/moderator.webp"
+               alt="" aria-hidden="true"
+               loading="eager" decoding="async" />
+          <img class="series-image"
+               src="assets/moderator.webp"
+               alt="Серия Модератор — защита чувствительной кожи"
+               loading="eager" decoding="async" />
+        </div>
+      </div>
+
+      <div class="series-slot" data-index="2">
+        <div class="series-card">
+          <img class="series-glow"
+               src="assets/revitalizer.webp"
+               alt="" aria-hidden="true"
+               loading="eager" decoding="async" />
+          <img class="series-image"
+               src="assets/revitalizer.webp"
+               alt="Серия Ревиталайзер — упругость и сияние 35+"
+               loading="eager" decoding="async" />
+        </div>
+      </div>
+
+      <div class="series-slot" data-index="3">
+        <div class="series-card">
+          <img class="series-glow"
+               src="assets/sebo-regulator.webp"
+               alt="" aria-hidden="true"
+               loading="eager" decoding="async" />
+          <img class="series-image"
+               src="assets/sebo-regulator.webp"
+               alt="Серия Себо-регулятор — контроль жирности и сужение пор"
+               loading="eager" decoding="async" />
+        </div>
+      </div>
+
+      <div class="series-slot" data-index="4">
+        <div class="series-card">
+          <img class="series-glow"
+               src="assets/hydratant.webp"
+               alt="" aria-hidden="true"
+               loading="eager" decoding="async" />
+          <img class="series-image"
+               src="assets/hydratant.webp"
+               alt="Серия Гидратант — глубокое увлажнение"
+               loading="eager" decoding="async" />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Подпись активной серии -->
+    <div class="active-series-label" id="activeSeriesLabel">
+      <div class="active-series-name" id="activeSeriesName"></div>
+      <div class="active-series-desc" id="activeSeriesDesc"></div>
+    </div>
+
+    <!-- Скролл-хинт -->
+    <button class="hero-scroll-hint" onclick="scrollNav('#series')" aria-label="Смотреть все серии">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Смотреть серии</span>
+    </button>
+
+  </section>
+
+
+  <!-- ========================================
+       О БРЕНДЕ
+  ======================================== -->
+  <section class="about-section" id="about" aria-label="О бренде KDA Expert">
+    <div class="about-inner">
+
+      <p class="section-eyelet">О бренде</p>
+      <h2 class="section-title">
+        KDA Expert — российская<br>экспертная косметика
+      </h2>
+
+      <!-- K · D · A -->
+      <div class="kda-grid">
+
+        <article class="kda-card">
+          <span class="kda-bg-letter" aria-hidden="true">K</span>
+          <div class="kda-badge">
+            <span class="kda-badge-letter">K</span>
+            <span class="kda-badge-word">Kind</span>
+          </div>
+          <h3 class="kda-card-h">Бережная формула</h3>
+          <p class="kda-card-p">
+            Даже в сериях для жирной кожи и акне — не пересушиваем,
+            а восстанавливаем баланс. Никакой агрессии, только мягкое
+            точечное воздействие.
+          </p>
+        </article>
+
+        <article class="kda-card">
+          <span class="kda-bg-letter" aria-hidden="true">D</span>
+          <div class="kda-badge">
+            <span class="kda-badge-letter">D</span>
+            <span class="kda-badge-word">Deluxe</span>
+          </div>
+          <h3 class="kda-card-h">Технологичные активы</h3>
+          <p class="kda-card-p">
+            4D гиалуроновая кислота, ретиналь, SymWhite&nbsp;377,
+            SymCalmin&nbsp;— ингредиенты с клинически подтверждённой
+            эффективностью. Без замены на более дешёвые аналоги.
+          </p>
+        </article>
+
+        <article class="kda-card">
+          <span class="kda-bg-letter" aria-hidden="true">A</span>
+          <div class="kda-badge">
+            <span class="kda-badge-letter">A</span>
+            <span class="kda-badge-word">Available</span>
+          </div>
+          <h3 class="kda-card-h">Доступный уход</h3>
+          <p class="kda-card-p">
+            Профессиональные формулы без переплаты за имя бренда.
+            Понятная навигация по задачам кожи&nbsp;— вы выбираете
+            серию под задачу, а не под рекламу.
+          </p>
+        </article>
+
+      </div>
+
+      <div class="about-rule" role="separator"></div>
+
+      <!-- Цифры -->
+      <div class="about-stats">
+        <div>
+          <p class="stat-value">2020</p>
+          <p class="stat-label">год основания бренда</p>
+        </div>
+        <div>
+          <p class="stat-value">6</p>
+          <p class="stat-label">серий под задачи кожи</p>
+        </div>
+        <div>
+          <p class="stat-value">33</p>
+          <p class="stat-label">SKU в линейке</p>
+        </div>
+        <div>
+          <p class="stat-value">GMP</p>
+          <p class="stat-label">стандарт производства</p>
+        </div>
+      </div>
+
+      <div class="about-rule" role="separator"></div>
+
+      <!-- Миссия -->
+      <div class="about-mission">
+        <p class="mission-text">
+          Мы создаём не просто косметику&nbsp;— а&nbsp;<strong>систему</strong>,
+          где каждый продукт занимает своё место в протоколе ухода.
+          Один шаг, один ингредиент, одна задача&nbsp;—
+          и&nbsp;всё это работает вместе.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================
+       СЕРИИ — КАТАЛОГ
+  ======================================== -->
+  <section class="series-section" id="series" aria-label="Линейки продуктов KDA Expert">
+    <div class="series-inner">
+
+      <div class="series-header reveal">
+        <div class="series-header-text">
+          <p class="section-eyelet">Линейка продуктов</p>
+          <h2 class="section-title">6 серий — каждая под свою задачу кожи</h2>
+        </div>
+        <span class="series-count-badge" aria-hidden="true">33 SKU</span>
+      </div>
+
+      <div class="series-grid">
+
+        <!-- Ревиталайзер -->
+        <article class="sc reveal" style="--c:#D6224A">
+          <div class="sc-badge">
+            <span class="sc-dot"></span>
+            <span class="sc-series-name">Ревиталайзер</span>
+          </div>
+          <div class="sc-img-wrap">
+            <img class="sc-img" src="assets/к1.png" alt="Серия Ревиталайзер" loading="lazy" />
+          </div>
+          <h3 class="sc-h">Упругость и сияние 35+</h3>
+          <p class="sc-task">Возрастное восстановление</p>
+          <p class="sc-desc">Комплексный протокол для кожи с первыми признаками возрастных изменений. Восстанавливает упругость, сглаживает морщины, возвращает сияние.</p>
+          <div class="sc-tags">
+            <span class="sc-tag">Ретинол</span>
+            <span class="sc-tag">Пептиды</span>
+            <span class="sc-tag">Проксилан</span>
+            <span class="sc-tag">Карнозин</span>
+          </div>
+          <p class="sc-sku">10 SKU в серии</p>
+        </article>
+
+        <!-- Гидратант -->
+        <article class="sc reveal" style="--c:#1648A0">
+          <div class="sc-badge">
+            <span class="sc-dot"></span>
+            <span class="sc-series-name">Гидратант</span>
+          </div>
+          <div class="sc-img-wrap">
+            <img class="sc-img" src="assets/к2.png" alt="Серия Гидратант" loading="lazy" />
+          </div>
+          <h3 class="sc-h">Глубокое увлажнение</h3>
+          <p class="sc-task">Восстановление барьера</p>
+          <p class="sc-desc">Многоуровневое увлажнение и восстановление гидролипидного барьера. Кожа напитана, эластична и защищена от обезвоживания в течение дня.</p>
+          <div class="sc-tags">
+            <span class="sc-tag">4D Гиалуроновая кислота</span>
+            <span class="sc-tag">Коллаген</span>
+          </div>
+          <p class="sc-sku">8 SKU в серии</p>
+        </article>
+
+        <!-- Депигментатор -->
+        <article class="sc reveal" style="--c:#8254C4">
+          <div class="sc-badge">
+            <span class="sc-dot"></span>
+            <span class="sc-series-name">Депигментатор</span>
+          </div>
+          <div class="sc-img-wrap">
+            <img class="sc-img" src="assets/к3.png" alt="Серия Депигментатор" loading="lazy" />
+          </div>
+          <h3 class="sc-h">Ровный тон и осветление</h3>
+          <p class="sc-task">Коррекция пигментации</p>
+          <p class="sc-desc">Прицельная работа с пигментными пятнами, постакне и неровным тоном. Осветляет без агрессии, с защитой от повторного появления пятен.</p>
+          <div class="sc-tags">
+            <span class="sc-tag">SymWhite 377</span>
+            <span class="sc-tag">Транексамовая кислота</span>
+            <span class="sc-tag">SPF 30</span>
+          </div>
+          <p class="sc-sku">3 SKU в серии</p>
+        </article>
+
+        <!-- Себо-регулятор -->
+        <article class="sc reveal" style="--c:#19867A">
+          <div class="sc-badge">
+            <span class="sc-dot"></span>
+            <span class="sc-series-name">Себо-регулятор</span>
+          </div>
+          <div class="sc-img-wrap">
+            <img class="sc-img" src="assets/к4.png" alt="Серия Себо-регулятор" loading="lazy" />
+          </div>
+          <h3 class="sc-h">Контроль жирности</h3>
+          <p class="sc-task">Сужение пор, матирование</p>
+          <p class="sc-desc">Балансирует выработку себума, сужает поры и матирует кожу. Без пересушивания — сальные железы переходят в нормальный режим работы.</p>
+          <div class="sc-tags">
+            <span class="sc-tag">Ниацинамид</span>
+            <span class="sc-tag">Цинк PCA</span>
+            <span class="sc-tag">Салициловая кислота</span>
+          </div>
+          <p class="sc-sku">5 SKU в серии</p>
+        </article>
+
+        <!-- Анти-акне -->
+        <article class="sc reveal" style="--c:#7AAF4E">
+          <div class="sc-badge">
+            <span class="sc-dot"></span>
+            <span class="sc-series-name">Анти-акне</span>
+          </div>
+          <div class="sc-img-wrap">
+            <img class="sc-img" src="assets/к5.png" alt="Серия Анти-акне" loading="lazy" />
+          </div>
+          <h3 class="sc-h">Воспаления и рубцы</h3>
+          <p class="sc-task">Комплекс 3-в-1</p>
+          <p class="sc-desc">Точечное воздействие на воспаления, устранение следов акне и коррекция рубцов — три продукта как единый рабочий протокол.</p>
+          <div class="sc-tags">
+            <span class="sc-tag">Коллоидная сера</span>
+            <span class="sc-tag">Ниацинамид</span>
+          </div>
+          <p class="sc-sku">1 комплекс (3 продукта)</p>
+        </article>
+
+        <!-- Модератор -->
+        <article class="sc reveal" style="--c:#C87898">
+          <div class="sc-badge">
+            <span class="sc-dot"></span>
+            <span class="sc-series-name">Модератор</span>
+          </div>
+          <div class="sc-img-wrap">
+            <img class="sc-img" src="assets/к6.png" alt="Серия Модератор" loading="lazy" />
+          </div>
+          <h3 class="sc-h">Чувствительная кожа</h3>
+          <p class="sc-task">Покраснения, зуд, раздражения</p>
+          <p class="sc-desc">Успокаивает реактивную кожу, снимает покраснения и зуд. Укрепляет барьерную функцию без риска дополнительного раздражения.</p>
+          <div class="sc-tags">
+            <span class="sc-tag">SymCalmin</span>
+            <span class="sc-tag">Центелла</span>
+            <span class="sc-tag">Пантенол</span>
+          </div>
+          <p class="sc-sku">6 SKU в серии</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================
+       ПОЧЕМУ KDA EXPERT
+  ======================================== -->
+  <section class="why-section" aria-label="Преимущества KDA Expert">
+    <div class="why-inner">
+
+      <p class="section-eyelet reveal">Наш подход</p>
+      <h2 class="section-title reveal">Почему выбирают KDA Expert</h2>
+
+      <div class="why-grid">
+
+        <article class="why-card reveal">
+          <span class="why-num" aria-hidden="true">1</span>
+          <div class="why-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10 2a4 4 0 0 1 4 4 6 6 0 0 1-4 5.66A6 6 0 0 1 6 6a4 4 0 0 1 4-4z"/>
+              <path d="M10 18v-6"/>
+            </svg>
+          </div>
+          <h3 class="why-h">Система, а не отдельный крем</h3>
+          <p class="why-p">Каждая серия — полный пошаговый протокол от очищения до завершающего ухода. Продукты усиливают действие друг друга.</p>
+        </article>
+
+        <article class="why-card reveal">
+          <span class="why-num" aria-hidden="true">2</span>
+          <div class="why-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="10" cy="10" r="8"/>
+              <path d="M10 6v4l3 3"/>
+            </svg>
+          </div>
+          <h3 class="why-h">Доказанные активы</h3>
+          <p class="why-p">Только ингредиенты с клинически подтверждённой эффективностью. SymWhite 377, SymCalmin, SymRelief, 4D гиалуроновая кислота, ретиналь.</p>
+        </article>
+
+        <article class="why-card reveal">
+          <span class="why-num" aria-hidden="true">3</span>
+          <div class="why-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 10h14M10 3l7 7-7 7"/>
+            </svg>
+          </div>
+          <h3 class="why-h">Аптечный стандарт</h3>
+          <p class="why-p">Производство по стандарту GMP. Косметика продаётся в аптеках — это не декларация, а реальное требование к качеству и документации.</p>
+        </article>
+
+        <article class="why-card reveal">
+          <span class="why-num" aria-hidden="true">4</span>
+          <div class="why-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 9V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h3"/>
+              <circle cx="14" cy="15" r="3"/>
+              <path d="m16 15-1.5 1.5L13 15"/>
+            </svg>
+          </div>
+          <h3 class="why-h">Доступный премиум</h3>
+          <p class="why-p">Профессиональные технологии без переплаты за имя. Понятная навигация по задачам кожи — вы платите за эффективность, не за маркетинг.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================
+       ГДЕ КУПИТЬ (B2C)
+  ======================================== -->
+  <section class="buy-section" id="buy" aria-label="Где купить KDA Expert">
+    <div class="buy-inner">
+
+      <p class="section-eyelet reveal">Где купить</p>
+      <h2 class="section-title reveal">Доступно на маркетплейсах<br>и в аптеках</h2>
+
+      <div class="buy-grid">
+
+        <a href="#" class="marketplace-card mp-ozon reveal" aria-label="Купить на Ozon" target="_blank" rel="noopener">
+          <div class="mp-logo">
+            <span class="mp-logo-text">OZON</span>
+          </div>
+          <p class="mp-name">Ozon</p>
+          <p class="mp-desc">Быстрая доставка, удобный возврат</p>
+          <span class="mp-btn">Перейти в магазин</span>
+        </a>
+
+        <a href="#" class="marketplace-card mp-wb reveal" aria-label="Купить на Wildberries" target="_blank" rel="noopener">
+          <div class="mp-logo">
+            <span class="mp-logo-text">WB</span>
+          </div>
+          <p class="mp-name">Wildberries</p>
+          <p class="mp-desc">Крупнейший маркетплейс России</p>
+          <span class="mp-btn">Перейти в магазин</span>
+        </a>
+
+        <a href="#" class="marketplace-card mp-ym reveal" aria-label="Купить на Яндекс Маркет" target="_blank" rel="noopener">
+          <div class="mp-logo">
+            <span class="mp-logo-text">Маркет</span>
+          </div>
+          <p class="mp-name">Яндекс Маркет</p>
+          <p class="mp-desc">Удобный выбор и быстрая доставка</p>
+          <span class="mp-btn">Перейти в магазин</span>
+        </a>
+
+        <a href="#" class="marketplace-card mp-apteki reveal" aria-label="Купить в АптекиПлюс" target="_blank" rel="noopener">
+          <div class="mp-logo">
+            <span class="mp-logo-text" style="font-size:clamp(13px,1.2vw,16px)">АптекиПлюс</span>
+          </div>
+          <p class="mp-name">АптекиПлюс</p>
+          <p class="mp-desc">Онлайн и офлайн аптеки по всей России</p>
+          <span class="mp-btn">Перейти в каталог</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================
+       ДЛЯ ПАРТНЁРОВ (B2B)
+  ======================================== -->
+  <section class="partners-section" id="partners" aria-label="Партнёрство с KDA Expert">
+    <div class="partners-inner">
+
+      <p class="section-eyelet reveal">B2B</p>
+      <h2 class="section-title reveal">Работаем с партнёрами</h2>
+
+      <div class="partners-layout">
+
+        <!-- Преимущества -->
+        <div class="partners-benefits">
+
+          <div class="benefit-card reveal">
+            <div class="benefit-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 2L2 6v6l7 4 7-4V6L9 2z"/>
+                <path d="M9 12V6"/>
+                <path d="M5.5 7.5 9 6l3.5 1.5"/>
+              </svg>
+            </div>
+            <div class="benefit-text">
+              <p class="benefit-h">Минимальный заказ</p>
+              <p class="benefit-p">Гибкие условия по объёму — уточняется при запросе. Работаем с аптеками, сетями и независимыми розничными точками.</p>
+            </div>
+          </div>
+
+          <div class="benefit-card reveal">
+            <div class="benefit-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="14" height="10" rx="2"/>
+                <path d="M6 16h6M9 13v3"/>
+              </svg>
+            </div>
+            <div class="benefit-text">
+              <p class="benefit-h">Маркетинговая поддержка</p>
+              <p class="benefit-p">Вкладыши, POS-материалы, контент для онлайн-каналов. Помогаем с представлением бренда на полке и в digital.</p>
+            </div>
+          </div>
+
+          <div class="benefit-card reveal">
+            <div class="benefit-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9h12M3 5h5M3 13h8"/>
+                <circle cx="14" cy="5" r="2"/>
+                <circle cx="14" cy="13" r="2"/>
+              </svg>
+            </div>
+            <div class="benefit-text">
+              <p class="benefit-h">Логистика</p>
+              <p class="benefit-p">Условия поставок и логистические решения уточняются при обращении. Работаем по всей России.</p>
+            </div>
+          </div>
+
+          <div class="benefit-card reveal">
+            <div class="benefit-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 2h7l4 4v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/>
+                <path d="M11 2v4h4"/>
+                <path d="M6 10h6M6 13h4"/>
+              </svg>
+            </div>
+            <div class="benefit-text">
+              <p class="benefit-h">Документация</p>
+              <p class="benefit-p">Полный пакет: сертификаты качества, декларации соответствия, GMP-документация. Всё необходимое для аптечной сети.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- CTA блок -->
+        <div class="partners-cta-col reveal">
+          <div class="partners-cta-box">
+            <p class="cta-box-eyelet">Стать партнёром</p>
+            <h3 class="cta-box-h">Предложение для аптек и магазинов</h3>
+            <p class="cta-box-p">
+              Оставьте заявку — мы свяжемся в течение рабочего дня и
+              обсудим условия, которые подойдут именно вашему бизнесу.
+            </p>
+            <div class="cta-box-btns">
+              <button class="cta-btn-white" id="partnerFormBtn">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                  <path d="M13 2H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
+                  <path d="M5 6h6M5 9h4"/>
+                </svg>
+                Заполнить заявку
+              </button>
+              <a href="#" class="cta-btn-ghost-white" download>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                  <path d="M8 2v8M4 7l4 4 4-4"/>
+                  <path d="M2 13h12"/>
+                </svg>
+                Скачать каталог
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================
+       ФУТЕР
+  ======================================== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+
+      <div class="footer-top">
+
+        <div class="footer-brand">
+          <img src="assets/Logo SVG синий.svg" alt="KDA Expert" class="footer-logo" />
+          <p class="footer-brand-p">
+            Российская экспертная косметическая линейка. 6 серий под конкретные задачи кожи — полным пошаговым протоколом.
+          </p>
+          <span class="footer-gmp">GMP · Производство</span>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-col-h">Серии</p>
+          <ul>
+            <li><a href="#series">Ревиталайзер</a></li>
+            <li><a href="#series">Гидратант</a></li>
+            <li><a href="#series">Депигментатор</a></li>
+            <li><a href="#series">Себо-регулятор</a></li>
+            <li><a href="#series">Анти-акне</a></li>
+            <li><a href="#series">Модератор</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-col-h">Купить</p>
+          <ul>
+            <li><a href="#" target="_blank" rel="noopener">Ozon</a></li>
+            <li><a href="#" target="_blank" rel="noopener">Wildberries</a></li>
+            <li><a href="#" target="_blank" rel="noopener">Яндекс Маркет</a></li>
+            <li><a href="#" target="_blank" rel="noopener">АптекиПлюс</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-col-h">Партнёрам</p>
+          <ul>
+            <li><a href="#partners">Стать партнёром</a></li>
+            <li><a href="#">Скачать каталог</a></li>
+            <li><a href="#about">О бренде</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2020–2026 KDA Expert. Все права защищены.</p>
+        <div class="footer-series-dots" aria-hidden="true">
+          <span class="footer-dot" style="background:#D6224A"></span>
+          <span class="footer-dot" style="background:#1648A0"></span>
+          <span class="footer-dot" style="background:#8254C4"></span>
+          <span class="footer-dot" style="background:#19867A"></span>
+          <span class="footer-dot" style="background:#7AAF4E"></span>
+          <span class="footer-dot" style="background:#C87898"></span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- ========================================
+       МОБИЛЬНОЕ МЕНЮ — нижний drawer
+  ======================================== -->
+  <div class="mobile-drawer" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Меню">
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="drawer-panel" role="navigation">
+      <div class="drawer-handle" aria-hidden="true"></div>
+      <ul class="drawer-nav">
+        <li><a href="#series"   class="drawer-link">Серии</a></li>
+        <li><a href="#about"    class="drawer-link">О бренде</a></li>
+        <li><a href="#buy"      class="drawer-link">Где купить</a></li>
+        <li><a href="#partners" class="drawer-link">Партнёрам</a></li>
+      </ul>
+      <div class="drawer-cta">
+        <button class="drawer-btn-primary" id="drawerPartnerBtn">Стать партнёром</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================
+       МОДАЛ — ФОРМА ДЛЯ ПАРТНЁРОВ
+  ======================================== -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-label="Заявка партнёра">
+
+    <!-- Форма -->
+    <div class="modal-panel" id="modalPanel">
+
+      <div class="modal-header" id="modalFormHeader">
+        <div>
+          <h2 class="modal-title">Заявка партнёра</h2>
+          <p class="modal-subtitle">Заполните форму — мы свяжемся в течение рабочего дня</p>
+        </div>
+        <button class="modal-close" id="modalClose" aria-label="Закрыть">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M1 1l12 12M13 1L1 13"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body" id="modalFormBody">
+        <form id="partnerForm" novalidate>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="fName">Имя<span class="req">*</span></label>
+              <input class="form-input" type="text" id="fName" name="name" autocomplete="given-name" required placeholder="Иван" />
+              <span class="form-error">Введите ваше имя</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="fCompany">Компания<span class="req">*</span></label>
+              <input class="form-input" type="text" id="fCompany" name="company" autocomplete="organization" required placeholder="ООО «Аптека»" />
+              <span class="form-error">Введите название компании</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="fPosition">Должность</label>
+            <input class="form-input" type="text" id="fPosition" name="position" autocomplete="organization-title" placeholder="Закупщик, директор…" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="fPhone">Телефон<span class="req">*</span></label>
+              <input class="form-input" type="tel" id="fPhone" name="phone" autocomplete="tel" required placeholder="+7 (___) ___-__-__" />
+              <span class="form-error">Введите номер телефона</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="fEmail">Email<span class="req">*</span></label>
+              <input class="form-input" type="email" id="fEmail" name="email" autocomplete="email" required placeholder="ivan@company.ru" />
+              <span class="form-error">Введите корректный email</span>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label" for="fComment">Комментарий</label>
+            <textarea class="form-textarea" id="fComment" name="comment" placeholder="Расскажите о вашем запросе: регион, тип торговой точки, интересующие серии…"></textarea>
+          </div>
+
+          <button class="form-submit" type="submit" id="formSubmit">Отправить заявку</button>
+
+        </form>
+      </div>
+
+      <!-- Экран успеха -->
+      <div class="modal-success" id="modalSuccess">
+        <div class="success-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#19867A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 14l7 7L23 7"/>
+          </svg>
+        </div>
+        <h3>Заявка отправлена!</h3>
+        <p>Мы получили вашу заявку и свяжемся с вами в течение рабочего дня.</p>
+        <button class="form-submit" onclick="closeModal()" style="max-width:200px;margin:0 auto">Закрыть</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ========================================
+       JavaScript
+  ======================================== -->
+  <script>
+    // ── Sticky nav ──
+    const nav = document.getElementById('siteNav');
+    const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // ── Плавный скролл с offset 64px ──
+    // Назван scrollNav чтобы не конфликтовать с нативным window.scrollTo
+    function scrollNav(selector) {
+      const el = typeof selector === 'string'
+        ? document.querySelector(selector)
+        : selector;
+      if (!el) return;
+      const y = el.getBoundingClientRect().top + window.scrollY - 64;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (!href || href === '#') return;
+        const target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        scrollNav(target);
+      });
+    });
+
+    // ── Hero: Product Theatre ──
+    const heroEl  = document.getElementById('kdaHero');
+    const stage   = document.getElementById('seriesStage');
+    const slots   = [...stage.querySelectorAll('.series-slot')];
+    const labelEl = document.getElementById('activeSeriesLabel');
+    const nameEl  = document.getElementById('activeSeriesName');
+    const descEl  = document.getElementById('activeSeriesDesc');
+
+    const SERIES_COLORS = ['#8B63B7', '#D89BAD', '#C72E3B', '#1597A3', '#477CC9'];
+    const SERIES_NAMES  = ['ДЕПИГМЕНТАТОР', 'МОДЕРАТОР', 'РЕВИТАЛАЙЗЕР', 'СЕБО-РЕГУЛЯТОР', 'ГИДРАТАНТ'];
+    const SERIES_DESC   = [
+      'осветление и ровный тон',
+      'чувствительная кожа',
+      'упругость и сияние 35+',
+      'контроль жирности',
+      'глубокое увлажнение'
+    ];
+
+    let currentIdx = -1;
+
+    function clearSeries() {
+      if (currentIdx === -1) return;
+      currentIdx = -1;
+      slots.forEach(slot => {
+        slot.classList.remove('is-active', 'is-neighbor', 'is-far');
+      });
+      labelEl.classList.remove('is-visible');
+    }
+
+    function setActiveSeries(index) {
+      if (index === currentIdx) return;
+      currentIdx = index;
+
+      heroEl.style.setProperty('--active-color', SERIES_COLORS[index]);
+
+      slots.forEach((slot, i) => {
+        const diff = Math.abs(i - index);
+        slot.classList.toggle('is-active',   diff === 0);
+        slot.classList.toggle('is-neighbor', diff === 1);
+        slot.classList.toggle('is-far',      diff > 1);
+      });
+
+      nameEl.textContent = SERIES_NAMES[index];
+      descEl.textContent = SERIES_DESC[index];
+      labelEl.classList.add('is-visible');
+    }
+
+    // pointermove по stage — активация только в зоне карточек (ниже кнопок CTA)
+    const heroCta = document.querySelector('.hero-cta');
+
+    stage.addEventListener('pointermove', (e) => {
+      // Нижняя граница блока с кнопками + буфер 24px
+      const ctaBottom = heroCta ? heroCta.getBoundingClientRect().bottom + 24 : 0;
+      if (e.clientY < ctaBottom) return; // мышь выше зоны карточек — не реагируем
+
+      const rect  = stage.getBoundingClientRect();
+      const x     = e.clientX - rect.left;
+
+      // Ширина одного слота
+      const slotW = rect.width / slots.length;
+      const rawIdx = Math.floor(x / slotW);
+      const index  = Math.min(slots.length - 1, Math.max(0, rawIdx));
+
+      // Проверяем, что мышь в пределах ширины карточки (центр ± полширины карточки)
+      const cardW     = parseFloat(getComputedStyle(slots[0].querySelector('.series-card')).width) || slotW * 0.85;
+      const slotCenterX = (index + 0.5) * slotW;
+      if (Math.abs(x - slotCenterX) > cardW / 2) return;
+
+      setActiveSeries(index);
+    });
+
+    // Мышь покинула stage — сбрасываем в нейтральное состояние
+    stage.addEventListener('pointerleave', () => {
+      clearSeries();
+    });
+
+    // Tap / click на мобайл
+    slots.forEach((slot, i) => {
+      slot.addEventListener('click', () => setActiveSeries(i));
+    });
+
+    // ── Скрыть scroll hint при скролле ──
+    const hint = document.querySelector('.hero-scroll-hint');
+    if (hint) {
+      window.addEventListener('scroll', () => {
+        hint.style.opacity = window.scrollY > 40 ? '0' : '';
+      }, { passive: true });
+    }
+
+    // ── Мобильное меню ──
+    const burger = document.getElementById('navBurger');
+    const drawer = document.getElementById('mobileDrawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+
+    function openDrawer() {
+      drawer.classList.add('is-open');
+      burger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    burger.addEventListener('click', openDrawer);
+    drawerOverlay.addEventListener('click', closeDrawer);
+
+    document.querySelectorAll('.drawer-link').forEach(a => {
+      a.addEventListener('click', () => {
+        closeDrawer();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) setTimeout(() => scrollNav(target), 80);
+      });
+    });
+
+    // ── Модальное окно ──
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalClose   = document.getElementById('modalClose');
+
+    function openModal() {
+      modalOverlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => document.getElementById('fName').focus(), 100);
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    // Все кнопки «Стать партнёром» / «Заполнить заявку»
+    ['navPartnerBtn', 'heroPartnerBtn', 'partnerFormBtn', 'drawerPartnerBtn'].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) btn.addEventListener('click', (e) => { e.preventDefault(); closeDrawer(); openModal(); });
+    });
+
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // ── Валидация и отправка формы ──
+    const form       = document.getElementById('partnerForm');
+    const submitBtn  = document.getElementById('formSubmit');
+    const successBox = document.getElementById('modalSuccess');
+    const formBody   = document.getElementById('modalFormBody');
+    const formHeader = document.getElementById('modalFormHeader');
+
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function validateField(input) {
+      const group = input.closest('.form-group');
+      if (!group) return true;
+      let valid = true;
+
+      if (input.hasAttribute('required') && !input.value.trim()) valid = false;
+      if (input.type === 'email' && input.value.trim() && !EMAIL_RE.test(input.value.trim())) valid = false;
+
+      input.classList.toggle('is-invalid', !valid);
+      group.classList.toggle('has-error', !valid);
+      return valid;
+    }
+
+    // Валидация при потере фокуса (не в реальном времени)
+    form.querySelectorAll('.form-input, .form-textarea').forEach(input => {
+      input.addEventListener('blur', () => validateField(input));
+      input.addEventListener('input', () => {
+        if (input.classList.contains('is-invalid')) validateField(input);
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let allValid = true;
+      form.querySelectorAll('[required], [type="email"]').forEach(input => {
+        if (!validateField(input)) allValid = false;
+      });
+
+      if (!allValid) {
+        const first = form.querySelector('.is-invalid');
+        if (first) first.focus();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Отправляем…';
+
+      // Плейсхолдер отправки — подключить реальный endpoint позже
+      console.log('Форма партнёра:', Object.fromEntries(new FormData(form)));
+
+      setTimeout(() => {
+        formBody.style.display   = 'none';
+        formHeader.style.display = 'none';
+        successBox.classList.add('is-visible');
+      }, 800);
+    });
+
+    // ── Scroll-reveal (IntersectionObserver) ──
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (!entry.isIntersecting) return;
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }, Number(delay));
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    // Stagger по сеткам карточек
+    document.querySelectorAll('.series-grid .sc, .why-grid .why-card, .buy-grid .marketplace-card, .partners-benefits .benefit-card').forEach((el, i) => {
+      el.dataset.delay = (i % 4) * 80;
+    });
+
+    revealEls.forEach(el => revealObserver.observe(el));
+  </script>
+
+</body>
+</html>
